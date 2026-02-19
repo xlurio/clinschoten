@@ -82,7 +82,9 @@ int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
                                 + strlen(" - ")           //
                                 + strlen(verboseLogLevel) //
                                 + strlen(": ")            //
-                                + strlen(msg) + 1;
+                                + strlen(msg)             //
+                                + strlen("\n")            //
+                                + 1;
     char *formattedMsg = malloc(formattedMsgLength);
     if (formattedMsg == NULL)
     {

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(clinschoten VERSION 0.2.1 LANGUAGES C)
+project(clinschoten VERSION 0.2.2 LANGUAGES C)
 
 set(CLN_LOG_LEVEL 2 CACHE STRING "Logging level (0=NOT_SET, 1=DEBUG, 2=INFO, 3=WARNING, 4=ERROR, 5=CRITICAL)")
 set_property(CACHE CLN_LOG_LEVEL PROPERTY STRINGS "0" "1" "2" "3" "4" "5")
