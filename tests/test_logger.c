@@ -29,7 +29,7 @@ TEST(test_logger_log_info_level)
 {
     ClnLogger *logger = ClnLogger__new("InfoLogger", strlen("InfoLogger"));
     
-    int8_t result = ClnLogger__log(logger, CLN_INFO_LL, "Test message");
+    int8_t result = ClnLogger__log(logger, CLN_INFO_LL, "Test message", strlen("Test message"));
     ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for INFO level");
     
     ClnLogger__del(logger);
@@ -39,7 +39,7 @@ TEST(test_logger_log_debug_level)
 {
     ClnLogger *logger = ClnLogger__new("DebugLogger", strlen("DebugLogger"));
     
-    int8_t result = ClnLogger__log(logger, CLN_DEBUG_LL, "Debug message");
+    int8_t result = ClnLogger__log(logger, CLN_DEBUG_LL, "Debug message", strlen("Debug message"));
     ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for DEBUG level");
     
     ClnLogger__del(logger);
@@ -49,7 +49,7 @@ TEST(test_logger_log_warning_level)
 {
     ClnLogger *logger = ClnLogger__new("WarningLogger", strlen("WarningLogger"));
     
-    int8_t result = ClnLogger__log(logger, CLN_WARNING_LL, "Warning message");
+    int8_t result = ClnLogger__log(logger, CLN_WARNING_LL, "Warning message", strlen("Warning message"));
     ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for WARNING level");
     
     ClnLogger__del(logger);
@@ -59,7 +59,7 @@ TEST(test_logger_log_error_level)
 {
     ClnLogger *logger = ClnLogger__new("ErrorLogger", strlen("ErrorLogger"));
     
-    int8_t result = ClnLogger__log(logger, CLN_ERROR_LL, "Error message");
+    int8_t result = ClnLogger__log(logger, CLN_ERROR_LL, "Error message", strlen("Error message"));
     ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for ERROR level");
     
     ClnLogger__del(logger);
@@ -69,7 +69,7 @@ TEST(test_logger_log_critical_level)
 {
     ClnLogger *logger = ClnLogger__new("CriticalLogger", strlen("CriticalLogger"));
     
-    int8_t result = ClnLogger__log(logger, CLN_CRITICAL_LL, "Critical message");
+    int8_t result = ClnLogger__log(logger, CLN_CRITICAL_LL, "Critical message", strlen("Critical message"));
     ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for CRITICAL level");
     
     ClnLogger__del(logger);
@@ -95,7 +95,7 @@ TEST(test_logger_filters_lower_level)
 {
     ClnLogger *logger = ClnLogger__new("FilterLogger", strlen("FilterLogger"));
     
-    int8_t result = ClnLogger__log(logger, CLN_DEBUG_LL, "Should be filtered");
+    int8_t result = ClnLogger__log(logger, CLN_DEBUG_LL, "Should be filtered", strlen("Should be filtered"));
     ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS even for filtered messages");
     
     ClnLogger__del(logger);
