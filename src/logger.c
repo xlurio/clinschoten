@@ -108,7 +108,7 @@ int8_t ClnLogger__log(ClnLogger *self,
         msg);
 
     va_list args;
-    va_start(args, msg);
+    va_start(args, msgSize);
     vprintf(formattedMsg, args);
     va_end(args);
 
