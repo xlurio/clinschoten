@@ -10,7 +10,11 @@ typedef struct ClnLogger
 } ClnLogger;
 
 ClnLogger *ClnLogger__new(const char *name, size_t nameSize);
-int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...);
+int8_t ClnLogger__log(ClnLogger *self,
+                      uint8_t logLevel,
+                      char *msg,
+                      size_t msgSize,
+                      ...);
 void ClnLogger__del(ClnLogger *self);
 
 #endif

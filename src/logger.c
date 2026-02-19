@@ -61,7 +61,11 @@ ClnLogger *ClnLogger__new(const char *name, size_t nameSize)
     return logger;
 }
 
-int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
+int8_t ClnLogger__log(ClnLogger *self,
+                      uint8_t logLevel,
+                      char *msg,
+                      size_t msgSize,
+                      ...)
 {
     char *verboseLogLevel;
 
@@ -82,15 +86,17 @@ int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
                                 + strlen(" - ")           //
                                 + strlen(verboseLogLevel) //
                                 + strlen(": ")            //
-                                + strlen(msg)             //
+                                + msgSize                 //
                                 + strlen("\n")            //
                                 + 1;
     char *formattedMsg = malloc(formattedMsgLength);
+
     if (formattedMsg == NULL)
     {
         free(verboseLogLevel);
         return CLN_ERROR;
     }
+
     memset(formattedMsg, 0, formattedMsgLength);
 
     snprintf(
