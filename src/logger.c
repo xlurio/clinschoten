@@ -45,6 +45,22 @@ int8_t getVerboseLogLevel(uint8_t logLevel, char **result)
     return CLN_ERROR;
 }
 
+ClnLogger *ClnLogger__new(char *name, size_t nameSize)
+{
+    ClnLogger *logger = malloc(sizeof(ClnLogger));
+
+    if (logger == NULL)
+    {
+        fprintf(stderr, "clinschoten - CRITICAL: Unable to allocate memory for logger");
+        return NULL;
+    }
+
+    logger->name = name;
+    logger->nameSize = nameSize;
+
+    return logger;
+}
+
 int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
 {
     char *verboseLogLevel;
@@ -62,7 +78,7 @@ int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
         return CLN_ERROR;
     }
 
-    size_t formattedMsgLength = strlen(self->name)        //
+    size_t formattedMsgLength = self->nameSize            //
                                 + strlen(" - ")           //
                                 + strlen(verboseLogLevel) //
                                 + strlen(": ")            //
@@ -75,7 +91,13 @@ int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
     }
     memset(formattedMsg, 0, formattedMsgLength);
 
-    snprintf(formattedMsg, formattedMsgLength, "%s - %s: %s", self->name, verboseLogLevel, msg);
+    snprintf(
+        formattedMsg,
+        formattedMsgLength,
+        "%s - %s: %s",
+        self->name,
+        verboseLogLevel,
+        msg);
 
     va_list args;
     va_start(args, msg);
@@ -86,4 +108,9 @@ int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
     free(formattedMsg);
 
     return CLN_SUCCESS;
+}
+
+void ClnLogger__del(ClnLogger *self)
+{
+    free(self);
 }

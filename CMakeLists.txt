@@ -19,6 +19,11 @@ target_include_directories(clinschoten
         $<INSTALL_INTERFACE:include>
 )
 
+target_compile_definitions(clinschoten
+    PUBLIC
+        CLN_LOG_LEVEL=${CLN_LOG_LEVEL}
+)
+
 target_compile_features(clinschoten PUBLIC c_std_99)
 
 add_library(CLN::clinschoten ALIAS clinschoten)
@@ -67,15 +72,6 @@ option(CLN_BUILD_TESTING "Build the testing tree" ON)
 if(CLN_BUILD_TESTING)
     enable_testing()
 
-    add_library(unity STATIC
-        tests/unity/unity.c
-    )
-    
-    target_include_directories(unity
-        PUBLIC
-            ${CMAKE_CURRENT_SOURCE_DIR}/tests
-    )
-
     add_executable(clinschoten_tests
         tests/test_runner.c
         tests/test_logger.c
@@ -84,13 +80,12 @@ if(CLN_BUILD_TESTING)
     target_link_libraries(clinschoten_tests
         PRIVATE
             clinschoten
-            unity
     )
     
     target_include_directories(clinschoten_tests
         PRIVATE
-            ${CMAKE_CURRENT_SOURCE_DIR}/tests
             ${CMAKE_CURRENT_SOURCE_DIR}/include
+            ${CMAKE_CURRENT_SOURCE_DIR}/external/ccauchy/include
     )
     
     add_test(NAME clinschoten_tests COMMAND clinschoten_tests)

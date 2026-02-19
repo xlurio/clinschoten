@@ -5,9 +5,12 @@
 
 typedef struct ClnLogger
 {
-    char *name;
+    const char *name;
+    size_t nameSize;
 } ClnLogger;
 
+ClnLogger *ClnLogger__new(char *name, size_t nameSize);
 int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...);
+void ClnLogger__del(ClnLogger *self);
 
 #endif

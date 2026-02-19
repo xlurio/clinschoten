@@ -33,7 +33,7 @@ sudo cmake --install build
 
 ## Testing
 
-The project includes a comprehensive test suite using the Unity test framework.
+The project includes a comprehensive test suite using the [ccauchy](https://github.com/xlurio/ccauchy) test framework.
 
 ### Running Tests
 
@@ -50,7 +50,7 @@ cd build && ctest --output-on-failure
 
 ### Test Structure
 
-- `tests/unity/` - Unity test framework
+- `external/ccauchy/` - ccauchy test framework (header-only)
 - `tests/test_logger.c` - Logger functionality tests
 - `tests/test_runner.c` - Test runner main file
 
@@ -70,8 +70,8 @@ This project uses GitHub Actions for continuous integration. Tests run automatic
 - Every pull request targeting `main`
 
 The CI pipeline:
-- Tests on multiple platforms (Ubuntu, macOS)
-- Tests both Debug and Release builds
+- Tests on Ubuntu (latest)
+- Tests Release builds
 - Runs the full test suite with output on failure
 
 ## Usage
@@ -79,16 +79,17 @@ The CI pipeline:
 ```c
 #include <clinschoten/logger.h>
 #include <clinschoten/constants.h>
+#include <string.h>
 
 int main(void)
 {
-    ClnLogger logger;
-    logger.name = "MyApp";
+    ClnLogger *logger = ClnLogger__new("MyApp", strlen("MyApp"));
     
-    ClnLogger__log(&logger, INFO_LL, "Application started");
-    ClnLogger__log(&logger, WARNING_LL, "This is a warning");
-    ClnLogger__log(&logger, ERROR_LL, "An error occurred");
+    ClnLogger__log(logger, INFO_LL, "Application started");
+    ClnLogger__log(logger, WARNING_LL, "This is a warning");
+    ClnLogger__log(logger, ERROR_LL, "An error occurred");
     
+    ClnLogger__del(logger);
     return 0;
 }
 ```

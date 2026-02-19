@@ -1,100 +1,102 @@
-#include "unity/unity.h"
+#include "ccauchy.h"
 #include "clinschoten/logger.h"
 #include "clinschoten/constants.h"
 #include <stdlib.h>
 #include <string.h>
 
-void setUp(void)
+TEST(test_logger_creation)
 {
-}
-
-void tearDown(void)
-{
-}
-
-void test_logger_creation(void)
-{
-    ClnLogger logger;
-    logger.name = "TestLogger";
+    ClnLogger *logger = ClnLogger__new("TestLogger", strlen("TestLogger"));
     
-    TEST_ASSERT_NOT_NULL(logger.name);
-    TEST_ASSERT_EQUAL_STRING("TestLogger", logger.name);
-}
-
-void test_logger_null_name(void)
-{
-    ClnLogger logger;
-    logger.name = NULL;
+    ASSERT_NOT_NULL(logger, "Logger should be allocated");
+    ASSERT_NOT_NULL(logger->name, "logger->name");
+    ASSERT_STR_EQ(logger->name, "TestLogger", "Logger name should be 'TestLogger'");
     
-    TEST_ASSERT_NULL(logger.name);
+    ClnLogger__del(logger);
 }
 
-void test_logger_log_info_level(void)
+TEST(test_logger_null_name)
 {
-    ClnLogger logger;
-    logger.name = "InfoLogger";
+    ClnLogger *logger = ClnLogger__new(NULL, 0);
     
-    int8_t result = ClnLogger__log(&logger, INFO_LL, "Test message");
-    TEST_ASSERT_EQUAL(CLN_SUCCESS, result);
-}
-
-void test_logger_log_debug_level(void)
-{
-    ClnLogger logger;
-    logger.name = "DebugLogger";
+    ASSERT_NOT_NULL(logger, "Logger should be allocated even with NULL name");
+    ASSERT_NULL(logger->name, "logger->name");
     
-    int8_t result = ClnLogger__log(&logger, DEBUG_LL, "Debug message");
-    TEST_ASSERT_EQUAL(CLN_SUCCESS, result);
+    ClnLogger__del(logger);
 }
 
-void test_logger_log_warning_level(void)
+TEST(test_logger_log_info_level)
 {
-    ClnLogger logger;
-    logger.name = "WarningLogger";
+    ClnLogger *logger = ClnLogger__new("InfoLogger", strlen("InfoLogger"));
     
-    int8_t result = ClnLogger__log(&logger, WARNING_LL, "Warning message");
-    TEST_ASSERT_EQUAL(CLN_SUCCESS, result);
-}
-
-void test_logger_log_error_level(void)
-{
-    ClnLogger logger;
-    logger.name = "ErrorLogger";
+    int8_t result = ClnLogger__log(logger, INFO_LL, "Test message");
+    ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for INFO level");
     
-    int8_t result = ClnLogger__log(&logger, ERROR_LL, "Error message");
-    TEST_ASSERT_EQUAL(CLN_SUCCESS, result);
+    ClnLogger__del(logger);
 }
 
-void test_logger_log_critical_level(void)
+TEST(test_logger_log_debug_level)
 {
-    ClnLogger logger;
-    logger.name = "CriticalLogger";
+    ClnLogger *logger = ClnLogger__new("DebugLogger", strlen("DebugLogger"));
     
-    int8_t result = ClnLogger__log(&logger, CRITICAL_LL, "Critical message");
-    TEST_ASSERT_EQUAL(CLN_SUCCESS, result);
-}
-
-void test_constants_success_error(void)
-{
-    TEST_ASSERT_EQUAL(0, CLN_SUCCESS);
-    TEST_ASSERT_EQUAL(-1, CLN_ERROR);
-}
-
-void test_log_level_constants(void)
-{
-    TEST_ASSERT_EQUAL(0, NOT_SET_LL);
-    TEST_ASSERT_EQUAL(1, DEBUG_LL);
-    TEST_ASSERT_EQUAL(2, INFO_LL);
-    TEST_ASSERT_EQUAL(3, WARNING_LL);
-    TEST_ASSERT_EQUAL(4, ERROR_LL);
-    TEST_ASSERT_EQUAL(5, CRITICAL_LL);
-}
-
-void test_logger_filters_lower_level(void)
-{
-    ClnLogger logger;
-    logger.name = "FilterLogger";
+    int8_t result = ClnLogger__log(logger, DEBUG_LL, "Debug message");
+    ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for DEBUG level");
     
-    int8_t result = ClnLogger__log(&logger, DEBUG_LL, "Should be filtered");
-    TEST_ASSERT_EQUAL(CLN_SUCCESS, result);
+    ClnLogger__del(logger);
+}
+
+TEST(test_logger_log_warning_level)
+{
+    ClnLogger *logger = ClnLogger__new("WarningLogger", strlen("WarningLogger"));
+    
+    int8_t result = ClnLogger__log(logger, WARNING_LL, "Warning message");
+    ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for WARNING level");
+    
+    ClnLogger__del(logger);
+}
+
+TEST(test_logger_log_error_level)
+{
+    ClnLogger *logger = ClnLogger__new("ErrorLogger", strlen("ErrorLogger"));
+    
+    int8_t result = ClnLogger__log(logger, ERROR_LL, "Error message");
+    ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for ERROR level");
+    
+    ClnLogger__del(logger);
+}
+
+TEST(test_logger_log_critical_level)
+{
+    ClnLogger *logger = ClnLogger__new("CriticalLogger", strlen("CriticalLogger"));
+    
+    int8_t result = ClnLogger__log(logger, CRITICAL_LL, "Critical message");
+    ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS for CRITICAL level");
+    
+    ClnLogger__del(logger);
+}
+
+TEST(test_constants_success_error)
+{
+    ASSERT_EQ(CLN_SUCCESS, 0, "CLN_SUCCESS should equal 0");
+    ASSERT_EQ(CLN_ERROR, -1, "CLN_ERROR should equal -1");
+}
+
+TEST(test_log_level_constants)
+{
+    ASSERT_EQ(NOT_SET_LL, 0, "NOT_SET_LL should equal 0");
+    ASSERT_EQ(DEBUG_LL, 1, "DEBUG_LL should equal 1");
+    ASSERT_EQ(INFO_LL, 2, "INFO_LL should equal 2");
+    ASSERT_EQ(WARNING_LL, 3, "WARNING_LL should equal 3");
+    ASSERT_EQ(ERROR_LL, 4, "ERROR_LL should equal 4");
+    ASSERT_EQ(CRITICAL_LL, 5, "CRITICAL_LL should equal 5");
+}
+
+TEST(test_logger_filters_lower_level)
+{
+    ClnLogger *logger = ClnLogger__new("FilterLogger", strlen("FilterLogger"));
+    
+    int8_t result = ClnLogger__log(logger, DEBUG_LL, "Should be filtered");
+    ASSERT_EQ(result, CLN_SUCCESS, "Logger should return CLN_SUCCESS even for filtered messages");
+    
+    ClnLogger__del(logger);
 }
