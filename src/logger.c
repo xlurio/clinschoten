@@ -45,7 +45,7 @@ int8_t getVerboseLogLevel(uint8_t logLevel, char **result)
     return CLN_ERROR;
 }
 
-ClnLogger *ClnLogger__new(char *name, size_t nameSize)
+ClnLogger *ClnLogger__new(const char *name, size_t nameSize)
 {
     ClnLogger *logger = malloc(sizeof(ClnLogger));
 
