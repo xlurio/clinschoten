@@ -20,22 +20,22 @@ int8_t getVerboseLogLevel(uint8_t logLevel, char **result)
 
     switch (logLevel)
     {
-    case NOT_SET_LL:
+    case CLN_NOT_SET_LL:
         strcpy(*result, "NOT SET");
         return CLN_SUCCESS;
-    case DEBUG_LL:
+    case CLN_DEBUG_LL:
         strcpy(*result, "DEBUG");
         return CLN_SUCCESS;
-    case INFO_LL:
+    case CLN_INFO_LL:
         strcpy(*result, "INFO");
         return CLN_SUCCESS;
-    case WARNING_LL:
+    case CLN_WARNING_LL:
         strcpy(*result, "WARNING");
         return CLN_SUCCESS;
-    case ERROR_LL:
+    case CLN_ERROR_LL:
         strcpy(*result, "ERROR");
         return CLN_SUCCESS;
-    case CRITICAL_LL:
+    case CLN_CRITICAL_LL:
         strcpy(*result, "CRITICAL");
         return CLN_SUCCESS;
     }
