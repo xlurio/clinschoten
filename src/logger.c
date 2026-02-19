@@ -96,7 +96,7 @@ int8_t ClnLogger__log(ClnLogger *self, uint8_t logLevel, char *msg, ...)
     snprintf(
         formattedMsg,
         formattedMsgLength,
-        "%s - %s: %s",
+        "%s - %s: %s\n",
         self->name,
         verboseLogLevel,
         msg);
