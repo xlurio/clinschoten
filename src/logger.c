@@ -109,7 +109,7 @@ int8_t ClnLogger__log(ClnLogger *self,
 
     va_list args;
     va_start(args, msgSize);
-    vprintf(formattedMsg, args);
+    vfprintf(stderr, formattedMsg, args);
     va_end(args);
 
     free(verboseLogLevel);
