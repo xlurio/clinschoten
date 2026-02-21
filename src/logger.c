@@ -69,7 +69,7 @@ int8_t ClnLogger__log(ClnLogger *self,
 {
     char *verboseLogLevel;
 
-    if (CLN_LOG_LEVEL > logLevel)
+    if (CLN_LOG_LEVEL <= logLevel)
     {
         return CLN_SUCCESS;
     }
